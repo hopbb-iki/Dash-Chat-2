@@ -69,7 +69,7 @@ class MessageRow extends StatelessWidget {
               ? messageOptions.marginSameAuthor
               : messageOptions.marginDifferentAuthor,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment:
             isOwnMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: <Widget>[
@@ -85,7 +85,8 @@ class MessageRow extends StatelessWidget {
             SizedBox(width: messageOptions.spaceWhenAvatarIsHidden),
           GestureDetector(
             onTapDown: messageOptions.onTapDownMessage != null
-                ? (TapDownDetails td) => messageOptions.onTapDownMessage!(td, message)
+                ? (TapDownDetails td) =>
+                    messageOptions.onTapDownMessage!(td, message)
                 : null,
             onLongPress: messageOptions.onLongPressMessage != null
                 ? () => messageOptions.onLongPressMessage!(message)

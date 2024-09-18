@@ -14,6 +14,7 @@ class ChatMessage {
     this.mentions,
     this.status = MessageStatus.none,
     this.replyTo,
+    this.systemMessage,
   });
 
   /// Create a ChatMessage instance from json data
@@ -47,11 +48,13 @@ class ChatMessage {
       replyTo: jsonData['replyTo'] != null
           ? ChatMessage.fromJson(jsonData['replyTo'] as Map<String, dynamic>)
           : null,
+      systemMessage: jsonData['systemMessage']?.toString() == 'true',
     );
   }
 
   /// If the message is Markdown formatted then it will be converted to Markdown (by default it will be false)
   bool isMarkdown;
+
   /// Unique id for a ChatMessage (optional because during sending a message
   /// we might not have an id, maybe its generated on the server side)
   String? id;
@@ -85,6 +88,9 @@ class ChatMessage {
   /// If the message is a reply of another one TODO:
   ChatMessage? replyTo;
 
+  /// Optional check if this is a system message
+  bool? systemMessage;
+
   /// Convert a ChatMessage into a json
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -100,6 +106,7 @@ class ChatMessage {
       'status': status.toString(),
       'replyTo': replyTo?.toJson(),
       'isMarkdown': isMarkdown,
+      'systemMessage': systemMessage
     };
   }
 }

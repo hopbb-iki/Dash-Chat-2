@@ -106,29 +106,41 @@ class MessageListState extends State<MessageList> {
                                         messageListOptions:
                                             widget.messageListOptions,
                                       ),
-                              if (widget.messageOptions.messageRowBuilder !=
-                                  null) ...<Widget>[
-                                widget.messageOptions.messageRowBuilder!(
-                                  message,
-                                  previousMessage,
-                                  nextMessage,
-                                  isAfterDateSeparator,
-                                  isBeforeDateSeparator,
-                                ),
-                              ] else
-                                MessageRow(
-                                  message: widget.messages[i],
-                                  nextMessage: nextMessage,
-                                  previousMessage: previousMessage,
-                                  currentUser: widget.currentUser,
-                                  isAfterDateSeparator: isAfterDateSeparator,
-                                  isBeforeDateSeparator: isBeforeDateSeparator,
-                                  messageOptions: widget.messageOptions,
-                                ),
-                            ],
-                          );
-                        },
-                      ),
+                        if(widget.messageListOptions.customSeparators != null)
+                          ...widget.messageListOptions.customSeparators!
+                              .map<Widget>(
+                                  (CustomSeparator cs) {
+                                return Visibility(
+                                  visible: cs.shouldShowSeparator(message),
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(vertical: 5.0),
+                                      child: cs.separator
+                                  ),
+                                );
+                              }).toList(),
+                        if (widget.messageOptions.messageRowBuilder !=
+                            null) ...<Widget>[
+                          widget.messageOptions.messageRowBuilder!(
+                            message,
+                            previousMessage,
+                            nextMessage,
+                            isAfterDateSeparator,
+                            isBeforeDateSeparator,
+                          ),
+                        ] else
+                          MessageRow(
+                            message: widget.messages[i],
+                            nextMessage: nextMessage,
+                            previousMessage: previousMessage,
+                            currentUser: widget.currentUser,
+                            isAfterDateSeparator: isAfterDateSeparator,
+                            isBeforeDateSeparator: isBeforeDateSeparator,
+                            messageOptions: widget.messageOptions,
+                          ),
+                      ],
+                    );
+                  },
+                ),
               ),
               if (widget.typingUsers != null && widget.typingUsers!.isNotEmpty)
                 ...widget.typingUsers!.map((ChatUser user) {
@@ -168,13 +180,13 @@ class MessageListState extends State<MessageList> {
           if (!widget.scrollToBottomOptions.disabled && scrollToBottomIsVisible)
             widget.scrollToBottomOptions.scrollToBottomBuilder != null
                 ? widget.scrollToBottomOptions
-                    .scrollToBottomBuilder!(scrollController)
+                .scrollToBottomBuilder!(scrollController)
                 : DefaultScrollToBottom(
-                    scrollController: scrollController,
-                    readOnly: widget.readOnly,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    textColor: Theme.of(context).primaryColor,
-                  ),
+              scrollController: scrollController,
+              readOnly: widget.readOnly,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              textColor: Theme.of(context).primaryColor,
+            ),
         ],
       ),
     );
